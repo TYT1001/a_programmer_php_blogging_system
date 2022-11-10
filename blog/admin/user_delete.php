@@ -6,7 +6,7 @@
       header('Location: login.php');
     }
     
-    $post_id = $_GET['id'];
-    $stmt = $pdo->prepare("DELETE FROM posts WHERE id='$post_id'");
+    $id = $_GET['id'];
+    $stmt = $pdo->prepare("DELETE FROM users WHERE id='$id'");
     $stmt->execute();
-    header("Location: index.php");
+    header("Location: user_list.php");

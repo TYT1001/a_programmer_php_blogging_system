@@ -43,7 +43,7 @@
 ?>
 
 
-<?php include('header.html'); ?>
+<?php include('header.php'); ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

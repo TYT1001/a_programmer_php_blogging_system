@@ -12,17 +12,31 @@
 
     $blogId = $_GET['id'];
 
-    $stmtcm = $pdo->prepare("SELECT * FROM comments WHERE post_id='$blogId'");
+    $stmtcm = $pdo->prepare(
+      "SELECT * FROM comments 
+      LEFT JOIN users ON comments.author_id = users.id 
+      WHERE post_id='$blogId'"
+    );
     $stmtcm->execute();
     $comments = $stmtcm->fetchAll();
     // print '<pre>';
     // print_r($comments);
+    // $cmtAuthorcollection=array();
+    // foreach ($comments as $comment) {
+    //     array_push($cmtAuthorcollection,$comment['author_id']);
+    // }
+    // // print_r($cmtAuthorcollection);
+    // $users = array();
+    // foreach($cmtAuthorcollection as $cac){
 
-    $author_id = $comments[0]['author_id'];
-    $stmtau = $pdo->prepare("SELECT * FROM users WHERE id='$author_id'");
-    $stmtau->execute();
-    $user = $stmtau->fetch();
-    // print_r($user);
+    //   $author_id = $cac;
+    //   $stmtau = $pdo->prepare("SELECT * FROM users WHERE id='$author_id'");
+    //   $stmtau->execute();
+    //   array_push($users,$stmtau->fetch()) ;
+    // }
+    // print '<pre>';
+    // print_r($users);
+    // exit();
 
     if($_POST){
         $cmt = $_POST['comment'];
@@ -104,7 +118,7 @@
 
                     <div class="comment-text">
                         <span class="username">
-                            <?php echo $user['name']; ?>
+                            <?php echo $comment['name']; ?>
                         <span class="text-muted float-right"><?php echo $comment['created_at']; ?></span>
                         </span><!-- /.username -->
                         <?php echo $comment['content']; ?>
@@ -115,7 +129,7 @@
                 <?php
                     }
                 ?>
-                
+             
                 <!-- /.card-comment -->
               </div>
               <!-- /.card-footer -->

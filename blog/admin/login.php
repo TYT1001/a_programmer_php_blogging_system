@@ -11,8 +11,9 @@
     $stmt->bindValue(':email',$email);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if($user){
+    // print_r($user['role']);
+    // exit();
+    if($user['role'] === 1){
 
         if($user['password'] == $password){
             $_SESSION['user_id'] = $user['id'];

@@ -76,7 +76,7 @@ function subwords( $str, $max = 24, $char = ' ', $end = '...' ) {
                   $stmt->execute();
                   $rawResult = $stmt->fetchAll();
 
-                  $totalpages = ceil(count($rawResult)/ $numOfrecs);
+                  $totalpages = ceil(count($rawResult)/$numOfrecs);
 
                   $stmt = $pdo->prepare("SELECT * FROM posts ORDER BY id DESC LIMIT $offset,$numOfrecs");
                   $stmt->execute();
@@ -131,8 +131,9 @@ function subwords( $str, $max = 24, $char = ' ', $end = '...' ) {
 
                                 </div>
                                 <div class="container">
-                                <a href="delete.php?id=<?php echo $post['id']; ?>">
-                              
+                                <a href="delete.php?id=<?php echo $post['id']; ?>"
+                                    onclick="return confirm('Are you sure, you want to delete this post?')"
+                                >
                                   <button class="btn btn-danger ">Delete</button>
                                 </a>
 
