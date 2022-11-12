@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +31,7 @@
       ?>
 
          <form action="<?php echo $page == 'index.php' ? 'index.php' : 'user_list.php'; ?>" method="post">
+         <input type="hidden" name="_token" value="<?php echo $_SESSION['_token']; ?>" />
             <div class="form-inline">
                 <div class="input-group" >
                   <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" name="search">
@@ -89,7 +91,7 @@
                with font-awesome or any other icon font library -->
 
           <li class="nav-item">
-            <a href="index.php" class="nav-link">
+            <a href="./index.php" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Blogs
@@ -97,7 +99,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="user_list.php" class="nav-link">
+            <a href="./user_list.php" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 User
