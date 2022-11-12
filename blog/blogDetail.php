@@ -1,11 +1,11 @@
 <?php 
-    require './config/config.php';
     session_start();
+    require './config/config.php';
+    require 'config/common.php';
     if(empty($_SESSION['user_id']&&$_SESSION['logged_in'])){
         header('Location: login.php');
     }
-    // echo $authod_id;
-    // exit();
+    
     $stmt = $pdo->prepare("SELECT * FROM posts WHERE id=".$_GET['id']);
     $stmt->execute();
     $post = $stmt->fetch();
@@ -17,14 +17,6 @@
                             WHERE post_id='$blogId'");
     $stmtcm->execute();
     $comments = $stmtcm->fetchAll();
-    // print '<pre>';
-    // print_r($comments);
-
-    // $author_id = $comments[0]['author_id'];
-    // $stmtau = $pdo->prepare("SELECT * FROM users WHERE id='$author_id'");
-    // $stmtau->execute();
-    // $user = $stmtau->fetch();
-    // print_r($user);
 
     if($_POST){
         if(!empty($_POST['comment'])){
@@ -127,6 +119,8 @@
               <!-- /.card-footer -->
               <div class="card-footer">
                 <form  method="post">
+                  
+                  <input type="hidden" name="_token" value="<?php echo $_SESSION['_token']; ?>" />
                   <img class="img-fluid img-circle img-sm" src="./dist/img/user4-128x128.jpg" alt="Alt Text">
                   <!-- .img-push is used to add margin to elements next to floating images -->
                   <div class="img-push">

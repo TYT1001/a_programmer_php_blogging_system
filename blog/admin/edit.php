@@ -82,6 +82,8 @@
             <div class="card">
                 <div class="card-body">
                     <form action="" method="post" enctype="multipart/form-data">
+                      
+                    <input type="hidden" name="_token" value="<?php echo $_SESSION['_token']; ?>" />
                         <input type="hidden" name="id" value="<?php echo $post['id'];?>" />
                         <div class="form-group">
                                 <div>

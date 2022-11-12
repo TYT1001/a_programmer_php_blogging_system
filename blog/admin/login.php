@@ -1,6 +1,7 @@
 <?php
   session_start();
   require '../config/config.php';
+  require '../config/common.php';
   if($_POST) {
       //validation
       if(empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password'])<6 ){
@@ -25,12 +26,10 @@
       $user = $stmt->fetch(PDO::FETCH_ASSOC);
       
       if($user){
-
           if(password_verify($password,$user['password'])){
               $_SESSION['user_id'] = $user['id'];
               $_SESSION['user_name'] = $user['name'];
               $_SESSION['logged_in'] = time();
-              
               header('Location: index.php');
           }
       }
@@ -69,6 +68,8 @@
       <p class="login-box-msg">Sign in to start your session</p>
 
       <form action="login.php" method="post">
+        
+      <input type="hidden" name="_token" value="<?php echo $_SESSION['_token']; ?>" />
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
