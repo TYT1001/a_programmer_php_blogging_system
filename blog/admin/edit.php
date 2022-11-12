@@ -1,6 +1,7 @@
 <?php
     session_start();
     require '../config/config.php';
+    require '../config/common.php';
     if(empty($_SESSION['user_id']&&$_SESSION['logged_in'])){
       header('Location: login.php');
     }
@@ -84,12 +85,12 @@
                     <form action="" method="post" enctype="multipart/form-data">
                       
                     <input type="hidden" name="_token" value="<?php echo $_SESSION['_token']; ?>" />
-                        <input type="hidden" name="id" value="<?php echo $post['id'];?>" />
+                        <input type="hidden" name="id" value="<?php echo escape($post['id']);?>" />
                         <div class="form-group">
                                 <div>
                                   <label for="">Title</label>
                                   <br>
-                                  <input type="text" class="form-control" name="title" value="<?php echo $post['title']; ?>" >
+                                  <input type="text" class="form-control" name="title" value="<?php echo escape($post['title']); ?>" >
                                 </div>
                                 <span class="text-danger">
                                   <?php if(empty($titleErr)){ echo '';}else{ echo $titleErr;} ?>
@@ -99,7 +100,7 @@
                         <div class="form-group">
                           <div>
                                 <label for="">Description</label><br>
-                                <textarea name="description" id="" cols="140" rows="7" ><?php echo $post['description']; ?></textarea>
+                                <textarea name="description" id="" cols="140" rows="7" ><?php echo escape($post['description']); ?></textarea>
                           </div>
                           <span class="text-danger">
                             <?php if(empty($descriptionErr)){ echo '';}else{ echo $descriptionErr;} ?>
@@ -110,7 +111,7 @@
                         <div class="form-group">
                           <div>
                                 <label for="">Image</label><br>
-                                <img src="../images/<?php echo $post['image'] ?>" width="100">
+                                <img src="../images/<?php echo escape($post['image']) ?>" width="100">
                                 <input type="file" name="image" class="form-control">
                           </div>  
                           <span class="text-danger">

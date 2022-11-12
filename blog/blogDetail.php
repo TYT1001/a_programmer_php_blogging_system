@@ -75,7 +75,7 @@
                 </svg>
 
                 </a>
-                <h1 class="text-center text-muted" style="font-size: 24px;"><?php echo $post['title'];  ?></h1>
+                <h1 class="text-center text-muted" style="font-size: 24px;"><?php echo escape( $post['title']); ?></h1>
                 <!-- /.card-tools -->
               </div>
               <!-- /.card-header -->
@@ -83,7 +83,7 @@
                 <img class="img-fluid pad" src="./images/<?php echo $post['image'];  ?>" alt="Photo" style="width:50%;">
               </div>
               <div class="card-body">
-                    <p><?php echo $post['description'];  ?></p>
+                    <p><?php echo escape($post['description']); ?></p>
                     <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>
                     <button type="button" class="btn btn-default btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
                     <span class="float-right text-muted">127 likes - 3 comments</span>
@@ -102,10 +102,10 @@
 
                     <div class="comment-text">
                         <span class="username">
-                            <?php echo $comment['name']; ?>
-                        <span class="text-muted float-right"><?php echo $comment['created_at']; ?></span>
+                            <?php echo escape($comment['name']); ?>
+                        <span class="text-muted float-right"><?php echo escape($comment['created_at']); ?></span>
                         </span><!-- /.username -->
-                        <?php echo $comment['content']; ?>
+                        <?php echo escape($comment['content']); ?>
                     </div>
                   <!-- /.comment-text -->
                 </div>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require '../config/config.php';
+require '../config/common.php';
 if(empty($_SESSION['user_id']&&$_SESSION['logged_in'])){
   header('Location: login.php');
 }
@@ -119,9 +120,9 @@ function subwords( $str, $max = 24, $char = ' ', $end = '...' ) {
                           ?>
                             <tr class="">
                               <td><?php echo $i ?></td>
-                              <td><?php echo $post['title'] ?></td>
+                              <td><?php echo escape($post['title']) ?></td>
                               <td>
-                                    <?php echo subwords($post['description'],10).'...' ?>
+                                    <?php echo subwords(escape($post['description']),10).'...' ?>
                               </td>
                               <td class="">
                                 <div class="btn-group">
@@ -131,7 +132,7 @@ function subwords( $str, $max = 24, $char = ' ', $end = '...' ) {
 
                                 </div>
                                 <div class="container">
-                                <a href="delete.php?id=<?php echo $post['id']; ?>">
+                                <a href="delete.php?id=<?php echo escape($post['id']); ?>">
                               
                                   <button class="btn btn-danger ">Delete</button>
                                 </a>

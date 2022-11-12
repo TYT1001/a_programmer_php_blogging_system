@@ -77,14 +77,14 @@
             <div class="card">
                 <div class="card-body">
                     <form action="" method="post">
-                        <input type="hidden" name="id" value="<?php echo $user['id'];?>" />
+                        <input type="hidden" name="id" value="<?php echo ($user['id']);?>" />
                         
                         <input type="hidden" name="_token" value="<?php echo $_SESSION['_token']; ?>" />
                         <div class="form-group">
                             <div>
                                 <label for="">Name</label>
                                 <br>
-                                <input type="text" class="form-control" name="name" value="<?php echo $user['name']; ?>" >
+                                <input type="text" class="form-control" name="name" value="<?php echo escape($user['name']); ?>" >
                             </div>
                             <span class="text-danger">
                                 <?php if(empty($nameErr)){ echo ''; } else { echo $nameErr;}  ?>
@@ -94,7 +94,7 @@
                         <div class="form-group">
                                 <div>
                                     <label for="">Email</label><br>
-                                    <input type="email" name="email" id="" class="form-control" value="<?php echo $user['email']; ?>" >
+                                    <input type="email" name="email" id="" class="form-control" value="<?php echo escape($user['email']); ?>" >
                                 </div>
                                 <span class="text-danger">
                                     <?php if(empty($emailErr)){ echo ''; } else { echo $emailErr;}  ?>

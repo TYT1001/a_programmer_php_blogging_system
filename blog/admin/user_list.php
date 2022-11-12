@@ -1,6 +1,7 @@
 <?php
 
 require '../config/config.php';
+require '../config/common.php';
 session_start();
 if(empty($_SESSION['user_id'] && $_SESSION['logged_in'])){
     header('Location: login.php');
@@ -92,8 +93,8 @@ include('header.php');
                                     <tr>
 
                                         <th><?php echo $i  ?></th>
-                                        <td><?php echo $u['name']; ?></td>
-                                        <td><?php echo $u['email']; ?></td>
+                                        <td><?php echo escape($u['name']); ?></td>
+                                        <td><?php echo escape($u['email']); ?></td>
                                         <td>
                                             <?php
 
