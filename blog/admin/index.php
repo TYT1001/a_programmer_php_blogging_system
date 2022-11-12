@@ -32,7 +32,7 @@ function subwords( $str, $max = 24, $char = ' ', $end = '...' ) {
 }
 ?>
 
-<?php include('header.html'); ?>
+<?php include('header.php'); ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -26,7 +22,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-         <form action="index.php" method="post">
+
+      <?php
+        $link = $_SERVER['PHP_SELF'];
+        $link_array = explode('/',$link);
+        $page = end($link_array);
+      ?>
+
+         <form action="<?php echo $page == 'index.php' ? 'index.php' : 'user_list.php'; ?>" method="post">
             <div class="form-inline">
                 <div class="input-group" >
                   <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" name="search">
@@ -77,7 +80,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
       </div>
 
-      <!-- SidebarSearch Form -->
       
 
       <!-- Sidebar Menu -->
@@ -94,11 +96,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="user_list.php" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                User
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
   </aside>
-
-

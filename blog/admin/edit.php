@@ -7,7 +7,18 @@
     
     
     if($_POST){
-        $id = $_POST['id'];
+      if(empty($_POST['title']) || empty($_POST['description']) || empty($_FILES['image']['name']) ){
+        if(empty($_POST['title'])){
+            $titleErr = "title is required!";
+          }
+          if(empty($_POST['description'])){
+            $descriptionErr = "description is required!";
+          }
+          if(empty($_FILES['image']['name'])){
+            $imageErr = "image is required!";
+          }
+    }else{
+      $id = $_POST['id'];
         $title = $_POST['title'];
         $description = $_POST['description'];
         if($_FILES['image']['name'] != null){
@@ -34,6 +45,8 @@
                 }
         }
     }
+        
+    }
 
     $stmt = $pdo->prepare("SELECT * FROM posts WHERE id=".$_GET['id']);
     $stmt->execute();
@@ -43,7 +56,7 @@
 ?>
 
 
-<?php include('header.html'); ?>
+<?php include('header.php'); ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -71,19 +84,37 @@
                     <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<?php echo $post['id'];?>" />
                         <div class="form-group">
-                                <label for="">Title</label>
-                                <br>
-                                <input type="text" class="form-control" name="title" value="<?php echo $post['title']; ?>" required>
+                                <div>
+                                  <label for="">Title</label>
+                                  <br>
+                                  <input type="text" class="form-control" name="title" value="<?php echo $post['title']; ?>" >
+                                </div>
+                                <span class="text-danger">
+                                  <?php if(empty($titleErr)){ echo '';}else{ echo $titleErr;} ?>
+                                </span>
+                               
                         </div>
                         <div class="form-group">
+                          <div>
                                 <label for="">Description</label><br>
-                                <textarea name="description" id="" cols="140" rows="7" required><?php echo $post['description']; ?></textarea>
+                                <textarea name="description" id="" cols="140" rows="7" ><?php echo $post['description']; ?></textarea>
+                          </div>
+                          <span class="text-danger">
+                            <?php if(empty($descriptionErr)){ echo '';}else{ echo $descriptionErr;} ?>
+                          </span>
+                                
 
                         </div>
                         <div class="form-group">
+                          <div>
                                 <label for="">Image</label><br>
                                 <img src="../images/<?php echo $post['image'] ?>" width="100">
                                 <input type="file" name="image" class="form-control">
+                          </div>  
+                          <span class="text-danger">
+                            <?php if(empty($imageErr)){ echo '';}else{ echo $imageErr;} ?>
+                          </span>
+                                
                         </div>
                         <div class="form-group">
                             <button class="btn btn-success" type="submit">Update</button>

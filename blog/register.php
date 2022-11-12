@@ -1,32 +1,44 @@
 <?php
   session_start();
   require 'config/config.php';
+
   if($_POST) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    if(empty($_POST['name'])||empty($_POST['email'])||empty($_POST['password'])||strlen($_POST['name'])<6){
+      if(empty($_POST['name'])){
+        $nameErr = "name is required!";
+      }
+      if(empty($_POST['email'])){
+        $emailErr = "email is required!";
+      }
+      if(strlen($_POST['password'])<6){
+        $pwdErr = "password should be six characters at least!";
+      }
+      if(empty($_POST['password'])){
+        $pwdErr = "password is required!";
+      }
 
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE email=:email');
-
-    $stmt->bindValue(':email',$email);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if(!empty($user)){
-        echo "<script>alert('User email duplicate');</script>";
-    }{
-        
-        $stmt = $pdo->prepare("INSERT INTO users(name,email,password) VALUES (:name,:email,:password)");
-        $result = $stmt->execute(
-            array(':name'=>$name,':email'=>$email,':password'=>$password)
-        );
-        if($result){
-            echo "<script>alert('Successfully Register! Please Login');window.location.href = 'login.php';</script>";
-        }
-
+    }else{
+      $name = $_POST['name'];
+      $email = $_POST['email'];
+      $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+      $stmt = $pdo->prepare('SELECT * FROM users WHERE email=:email');
+      $stmt->bindValue(':email',$email);
+      $stmt->execute();
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      
+      if($user){
+        echo "<script>alert('User email duplicate');window.location.href = 'register.php';</script>";
+        }{
+          
+          $stmt = $pdo->prepare("INSERT INTO users(name,email,password) VALUES (:name,:email,:password)");
+          $result = $stmt->execute(
+              array(':name'=>$name,':email'=>$email,':password'=>$password)
+          );
+          if($result){
+              echo "<script>alert('Successfully Register!You can now Login');window.location.href = 'login.php';</script>";
+          } 
+      }
     }
-    
-
     // echo "<script>alert('Incorrect credentials')</script>";
   }
 ?>
@@ -58,7 +70,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="register.php" method="post">
+      <form action="./register.php" method="POST">
         <div class="input-group mb-3">
           <input type="text" name="name" class="form-control" placeholder="Name">
           <div class="input-group-append">
@@ -67,6 +79,11 @@
             </div>
           </div>
         </div>
+        <span class="text-danger">
+          <?php 
+          if(empty($nameErr)){ echo ''; }else { echo $nameErr;}
+            ?>
+        </span>
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
@@ -75,6 +92,11 @@
             </div>
           </div>
         </div>
+        <span class="text-danger">
+          <?php 
+          if(empty($emailErr)){ echo ''; }else { echo $emailErr;}
+            ?>
+        </span>
         <div class="input-group mb-3">
           <input type="password" name="password" class="form-control" placeholder="Password">
           <div class="input-group-append">
@@ -82,7 +104,15 @@
               <span class="fas fa-lock"></span>
             </div>
           </div>
+          
         </div>
+        <span class="text-danger">
+          <?php 
+          if(empty($pwdErr)){ echo ''; }else { echo $pwdErr;}
+            ?>
+        </span>
+        
+        
         <div class="row">
 
           <!-- /.col -->

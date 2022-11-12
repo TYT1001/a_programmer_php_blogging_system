@@ -2,28 +2,40 @@
   session_start();
   require 'config/config.php';
   if($_POST) {
-  
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    if(empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password'])<6 ){
+      if(empty($_POST['email'])){
+        $emailError = '*Email is required.';
+      }
+      if(strlen($_POST['password'])<6){
+        $passwordError = '*Password should be 6 characters at least';
+      }
+      if(empty($_POST['password'])){
+        $passwordError = '*Password is required.';
+      }
+      
+    }else{
+      $email = $_POST['email'];
+      $password = $_POST['password'];
 
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE email=:email');
+      $stmt = $pdo->prepare('SELECT * FROM users WHERE email=:email');
+      $stmt->bindValue(':email',$email);
+      $stmt->execute();
 
-    $stmt->bindValue(':email',$email);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if($user){
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      if($user){
 
-        if($user['password'] == $password){
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['name'];
-            $_SESSION['logged_in'] = time();
-            
-            header('Location: index.php');
-        }
+          if(password_verify($password,$user['password'])){
+              $_SESSION['user_id'] = $user['id'];
+              $_SESSION['user_name'] = $user['name'];
+              $_SESSION['logged_in'] = time();
+              
+              header('Location: index.php');
+          }
+      }
+
+      echo "<script>alert('Incorrect credentials')</script>";
     }
-
-    echo "<script>alert('Incorrect credentials')</script>";
+    
   }
 ?>
 
@@ -56,21 +68,36 @@
 
       <form action="login.php" method="post">
         <div class="input-group mb-3">
-          <input type="email" name="email" class="form-control" placeholder="Email">
+          <input type="email" name="email" class="form-control" placeholder="Email"/><br>
+          
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
             </div>
           </div>
         </div>
+        <span class="text-danger">
+            <?php
+            if (empty($emailError)) {
+                    echo '';
+            }else{ echo $emailError; }  
+            ?>
+          </span>
         <div class="input-group mb-3">
-          <input type="password" name="password" class="form-control" placeholder="Password">
+          <input type="password" name="password" class="form-control" placeholder="Password"/>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
           </div>
+          
         </div>
+        <span class="text-danger">
+            <?php if (empty($passwordError)) {
+              echo '';
+            }else{ echo $passwordError; }  ?>
+          </span>
+        
         <div class="row">
 
           <!-- /.col -->

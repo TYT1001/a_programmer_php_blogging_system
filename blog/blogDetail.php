@@ -12,26 +12,32 @@
 
     $blogId = $_GET['id'];
 
-    $stmtcm = $pdo->prepare("SELECT * FROM comments WHERE post_id='$blogId'");
+    $stmtcm = $pdo->prepare("SELECT * FROM comments 
+                            LEFT JOIN users ON users.id = comments.author_id
+                            WHERE post_id='$blogId'");
     $stmtcm->execute();
     $comments = $stmtcm->fetchAll();
     // print '<pre>';
     // print_r($comments);
 
-    $author_id = $comments[0]['author_id'];
-    $stmtau = $pdo->prepare("SELECT * FROM users WHERE id='$author_id'");
-    $stmtau->execute();
-    $user = $stmtau->fetch();
+    // $author_id = $comments[0]['author_id'];
+    // $stmtau = $pdo->prepare("SELECT * FROM users WHERE id='$author_id'");
+    // $stmtau->execute();
+    // $user = $stmtau->fetch();
     // print_r($user);
 
     if($_POST){
-        $cmt = $_POST['comment'];
-        $stmt = $pdo->prepare("INSERT INTO comments(content,author_id,post_id) VALUES (:content,:author_id,:post_id)");
-        $result = $stmt->execute(
-            array(':content'=>$cmt,':author_id'=>$_SESSION['user_id'],':post_id'=>$blogId)
-        );
-        if($result){
-            header('Location: blogDetail.php?id='.$blogId);
+        if(!empty($_POST['comment'])){
+          $cmt = $_POST['comment'];
+          $stmt = $pdo->prepare("INSERT INTO comments(content,author_id,post_id) VALUES (:content,:author_id,:post_id)");
+          $result = $stmt->execute(
+              array(':content'=>$cmt,':author_id'=>$_SESSION['user_id'],':post_id'=>$blogId)
+          );
+          if($result){
+              header('Location: blogDetail.php?id='.$blogId);
+          }
+        }else{
+          $cmtErr = '*comment should not be null!';
         }
     }
     
@@ -42,7 +48,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Widgets</title>
+  <title>Blog | Details</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -60,7 +66,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1 class="text-center">Blog Site</h1>
+                    <h1 class="text-center">BLog Details</h1>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -104,7 +110,7 @@
 
                     <div class="comment-text">
                         <span class="username">
-                            <?php echo $user['name']; ?>
+                            <?php echo $comment['name']; ?>
                         <span class="text-muted float-right"><?php echo $comment['created_at']; ?></span>
                         </span><!-- /.username -->
                         <?php echo $comment['content']; ?>
@@ -126,6 +132,13 @@
                   <div class="img-push">
                     <input name="comment" type="text" class="form-control form-control-sm" placeholder="Press enter to post comment">
                   </div>
+                  <span class="text-danger" style="margin-left: 44px;">
+
+                  <?php
+                    if(empty($cmtErr)) { echo '';} else { echo $cmtErr;}
+                  ?>
+                  </span>
+                  
                 </form>
               </div>
               <!-- /.card-footer -->

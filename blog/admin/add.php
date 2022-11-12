@@ -5,7 +5,19 @@
       header('Location: login.php');
     }
     if($_POST){
-        $file = '../images/'.($_FILES['image']['name']);
+      
+      if(empty($_POST['title']) || empty($_POST['description']) || empty($_FILES['image']['name']) ){
+        if(empty($_POST['title'])){
+            $titleErr = "title is required!";
+          }
+          if(empty($_POST['description'])){
+            $descriptionErr = "description is required!";
+          }
+          if(empty($_FILES['image']['name'])){
+            $imageErr = "image is required!";
+          }
+    }else{
+      $file = '../images/'.($_FILES['image']['name']);
         $imageType = pathinfo($file,PATHINFO_EXTENSION);
         
         if($imageType != 'png' && $imageType != 'jpg' &&  $imageType != 'jpeg'){
@@ -25,10 +37,12 @@
             }
         }
     }
+        
+    }
 ?>
 
 
-<?php include('header.html'); ?>
+<?php include('header.php'); ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -56,18 +70,36 @@
                     <form action="add.php" method="post" enctype="multipart/form-data">
 
                         <div class="form-group">
+                          <div>
                                 <label for="">Title</label>
                                 <br>
-                                <input type="text" class="form-control" name="title" required>
+                                <input type="text" class="form-control" name="title" >
+                          </div>
+                          <span class="text-danger">
+                            <?php if(empty($titleErr)) { echo ''; } else { echo $titleErr;} ?>
+                          </span> 
                         </div>
                         <div class="form-group">
+                          <div>
                                 <label for="">Description</label><br>
-                                <textarea name="description" id="" cols="140" rows="7" required></textarea>
+                                <textarea name="description" id="" cols="140" rows="7" ></textarea>
+                                <span class="text-danger">
+                          </div>
+                          <span class="text-danger">
 
+                            <?php if(empty($descriptionErr)) { echo ''; } else { echo $descriptionErr;} ?>
+                          </span>
+                          </span> 
                         </div>
                         <div class="form-group">
+                          <div>
                                 <label for="">Image</label><br>
-                                <input type="file" class="form-control" name="image" required>
+                                <input type="file" class="form-control" name="image" >
+                          </div>
+                          <span class="text-danger">
+                            <?php if(empty($imageErr)) { echo ''; } else { echo $imageErr;} ?>
+                          </span> 
+                                
                         </div>
                         <div class="form-group">
                             <button class="btn btn-success" type="submit">Create</button>

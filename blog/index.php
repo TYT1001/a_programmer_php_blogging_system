@@ -28,10 +28,10 @@
 
 <div class="wrapper">
   <!-- Navbar -->
-  
-  <a href="./logout.php" class="float-right mx-3 mt-3">
-            <button class="btn btn-sm btn-danger">Logout</button>
-    </a>
+  <span class="float-left mx-3 mt-3 btn btn-default p-1"><i class="nav-icon fas fa-user"></i> <?php echo $_SESSION['user_name']  ?></span>
+  <a href="./logout.php" class="float-right mx-3 mt-3 p-1">
+            <button class="btn btn-sm btn-danger ">Logout</button>
+  </a>
   
     
   <!-- /.navbar -->
